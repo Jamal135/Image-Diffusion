@@ -13,7 +13,7 @@ def import_or_install(package):
 
 def create_env():
     ''' Purpose: Creates .env file with provided Hugging Face token. '''
-    print('Please enter READ Hugging Face token https://huggingface.co/settings/tokens\nToken:')
+    print('Please enter READ Hugging Face token https://huggingface.co/settings/tokens \nToken:')
     TOKEN = input()
     with open('.env', 'w') as file:
         file.write(f'TOKEN={TOKEN}')
@@ -21,11 +21,15 @@ def create_env():
 
 if __name__ == '__main__':
     try:
-        import_or_install('pipenv') # https://pypi.org/project/pipenv/
+        import_or_install('virtualenv') # https://pypi.org/project/virtualenv/
+        import_or_install('conda') # https://pypi.org/project/conda/
         if not os.path.exists('.env'):
             create_env()
         print('Installing packages, this will take a while...')
-        os.system('pipenv install -r requirements.txt')
-        print('Setup success! Note: On Windows enable developer mode or run elevated.')
+        os.system('virtualenv .venv')
+        os.system('conda activate .venv')
+        os.system('pip install -r requirements.txt')
+        os.system('pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116')
+        print('Note: On Windows enable developer mode or run elevated, get latest NVIDIA drivers.')
     except Exception as e:
         print(f"Automatic setup failed:\n{e}")

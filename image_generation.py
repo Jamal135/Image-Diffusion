@@ -4,7 +4,6 @@ import torch
 from os import getenv
 from dotenv import load_dotenv
 from random import randint
-from pathlib import Path
 from torch import autocast, Generator
 from diffusers import StableDiffusionPipeline, LMSDiscreteScheduler
 
@@ -37,17 +36,8 @@ def create_pipeline():
 		exit()
 
 
-def uniquify(filename: str):
-	''' Returns filepath modified if needed to ensure it doesn't already exist. '''
-	counter = 1
-	filepath = Path(f'Images/{filename}.png')
-	while filepath.is_file():
-		filepath = Path(f'Images/{filename + "-" + str(counter)}.png') 
-		counter += 1
-	return filepath
-
-
-def generate_image(prompt: str, steps: int = 50, filename: str = None, seed: int = None):
+def generate_image(prompt: str, steps: int = 50, size: int = 512, 
+				   filename: str = None, seed: int = None):
 	''' Purpose: Creates and saves image from provided prompt. '''
 	if filename == None:
 		filename = 'result'
@@ -58,11 +48,10 @@ def generate_image(prompt: str, steps: int = 50, filename: str = None, seed: int
 	generator = Generator('cuda').manual_seed(seed)
 	with autocast('cuda'):
 		image = pipe(
-			prompt, 
+			prompt,
+			size=size, 
 			guidance_scale=7.5, 
 			num_inference_steps=steps,
 			generator=generator
 		)['sample'][0]
-	filepath = uniquify(filename)
-	image.save(filepath)
-	return seed
+	return seed, image

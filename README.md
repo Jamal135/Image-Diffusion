@@ -10,7 +10,7 @@ Do note, my hardware is crap. So if you are by chance using my code and have an 
 
 Now obviously no image generation repository would be complete without some examples! In the interest of showing you some realistic results, these aren't examples that I have slaved away for hours to make. These are examples I got very easily with somewhat well constructed prompts:
 
-![alt text]()
+![alt text](https://github.com/Jamal135/Image-Diffusion/blob/main/media/example1.png?raw=true)
 
 ![alt text]()
 
@@ -30,16 +30,17 @@ Link: https://huggingface.co/settings/tokens
 
 None the less here are the main things you need to do (in theory) to get this repository working for you:
 ```
-1:  Virtual Environment: Don't risk not having one, trust me. The setup.py will use virtualenv, you can use whatever.
-2:  Install Dependencies: They are all in the requirements.txt, get them all installed. pip install -r requirements.txt
-3:  CUDA Enabled Torch: Frankly this is a mess, if setup.py doesn't work goodluck. Make sure PyTorch is CUDA enabled.
-4:  Environment Variable: Through setup.py or manually, you must create a .env 'TOKEN=' a Hugging Face read token.
-5:  Developer Mode: If using Windows, activate developer mode. Or (if you prefer) always execute cli.py as admin.
-6:  GPU Drivers: Even if your GPU is compatible, make sure you have the latest/suitable drivers installed.
+1:  Virtual Environment: Just use one. The setup.py will use virtualenv, you can use whatever.
+2:  Install Dependencies: All in the requirements.txt, 'pip install -r requirements.txt'.
+3:  CUDA Enabled Torch: Frankly, if setup.py doesn't work goodluck. Get PyTorch CUDA enabled.
+4:  Environment Variable: Must create a .env 'TOKEN=' a Hugging Face read token. Setup does this.
+5:  Developer Mode: If using Windows, activate developer mode. Or always run cli.py as admin.
+6:  GPU Drivers: Even if your GPU is compatible, make sure you have the latest drivers.
 --- Most Importantly ---
-7:  Pray: Honestly Python is always a dependency mess but this stuff is particularly bad, best of luck.
+7:  Pray: Python is always a dependency mess but this stuff is particularly bad, best of luck.
 ```
 
+I would particularly appreciate any feedback on how the setup.py can be improved or any part of this project for that matter! Please do share if you have advice for me. I am no god tier developer but I am trying to do better.
 ***
 # Acknowledgements:
 ---

@@ -14,6 +14,7 @@ STEPS_MAX = 15000
 REGENERATE = 'Regenerate'
 ADJUST_STEPS = 'Adjust Steps'
 CHANGE_PROMPT = 'Change Prompt'
+LOOP = 'Loop'
 START_OVER = 'Start Over'
 EXIT = 'Exit'
 
@@ -34,7 +35,7 @@ def get_steps():
     ''' Returns: Integer input for number inference steps. '''
     steps = inquirer.list_input(
                         message = f'Number of steps',
-                        choices = [25, 50, 100, 250, 750, 'Custom'],
+                        choices = [25, 50, 75, 100, 250, 750, 'Custom'],
                         default = 50)
     if steps == 'Custom':
         steps = inquirer.text(
@@ -44,28 +45,46 @@ def get_steps():
     return int(steps)
 
 
-def check_prompt(_, prompt: str):
+def check_prompt(prompt: str):
     ''' Purpose: Validates prompt input text. '''
     if prompt == '':
-        raise inquirer.errors.ValidationError('', reason = 'Please enter a prompt...')
+        print('Please enter a prompt...')
     return True
 
 
 def get_prompt():
     ''' Returns: String input for image generation. '''
-    return inquirer.text(
-                        message = 'Describe image',
-                        validate = check_prompt
-    )
+    while True:
+        prompt = input('Describe image: ')
+        if check_prompt:
+            break
+    return prompt
+
+
+def check_loop(_, number: str):
+    ''' Purpose: Validates custom inference steps input. '''
+    if not number.isdigit():
+        raise inquirer.errors.ValidationError('', reason = f'{number} is not a valid number...')
+    return True
 
 
 def get_next_step():
     ''' Returns: User decision on next image generation. '''
-    return inquirer.list_input(
+    choice = inquirer.list_input(
                         message = 'What would you like to do next?',
-                        choices = [REGENERATE, ADJUST_STEPS, CHANGE_PROMPT, START_OVER, EXIT],
+                        choices = [REGENERATE, ADJUST_STEPS, CHANGE_PROMPT, LOOP, START_OVER, EXIT],
                         default = REGENERATE
                     )
+    if choice == 'Loop':
+        iterations = int(inquirer.text(
+                        message = 'Howmany times do you want to loop?',
+                        validate = check_loop
+        ))
+        for count in range(iterations):
+            print(f'\nGenerating image {count + 1}/{iterations}...')
+            create_image(None, choice)
+        return get_next_step()
+    return choice
 
 
 def uniquify(filename: str):
@@ -76,6 +95,22 @@ def uniquify(filename: str):
 		filepath = Path(f'Images/{filename + "-" + str(counter)}.png') 
 		counter += 1
 	return filepath
+
+
+def create_image(seed: int, choice: str):
+    ''' Purpose: Updates log file and called image generation. '''
+    seed, image = generate_image(prompt, steps, seed=seed)
+    filepath = uniquify(filename)
+    image.save(filepath)
+    print(f'Seed used: {seed}\n')
+    with open('Images/log.txt', 'a') as log:
+        log.write(f'{time.time()}, ')
+        log.write(f'{choice}, ')
+        log.write(f'{steps}, ') 
+        log.write(f'{prompt}, ')
+        log.write(f'{seed}, ')
+        log.write(f'{filepath}\n')
+    return seed
 
 
 if __name__ == '__main__':
@@ -90,18 +125,9 @@ if __name__ == '__main__':
             seed = seed
         else:
             seed = None
-        print('\nGenerating image...')
-        seed, image = generate_image(prompt, steps, seed=seed)
-        filepath = uniquify(filename)
-        image.save(filepath)
-        print(f'Seed used: {seed}\n')
-        with open('Images/log.txt', 'a') as log:
-            log.write(f'{time.time()}, ')
-            log.write(f'{choice}, ')
-            log.write(f'{steps}, ') 
-            log.write(f'{prompt}, ')
-            log.write(f'{seed}, ')
-            log.write(f'{filepath}\n')
+        print(f'\nGenerating image...')
+        seed = create_image(seed, choice)
         choice = get_next_step()
         if choice == EXIT:
             exit()
+

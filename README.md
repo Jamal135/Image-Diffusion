@@ -25,6 +25,9 @@ Now obviously no image generation repository would be complete without some exam
 <p align="center">
   <img src="https://github.com/Jamal135/Image-Diffusion/blob/main/media/example5.png?raw=true"/>
 </p>
+<p align="center">
+  <img src="https://github.com/Jamal135/Image-Diffusion/blob/main/media/example6.png?raw=true"/>
+</p>
 
 Creation Date: 06/11/2022
 

@@ -10,13 +10,18 @@ Do note, my hardware is crap. So if you are by chance using my code and have an 
 
 Now obviously no image generation repository would be complete without some examples! In the interest of showing you some realistic results, these aren't examples that I have slaved away for hours to make. These are examples I got very easily with somewhat well constructed prompts:
 
-![alt text](https://github.com/Jamal135/Image-Diffusion/blob/main/media/example1.png?raw=true)
-
-![alt text]()
-
-![alt text]()
-
-![alt text]()
+<p align="center">
+  <img src="https://github.com/Jamal135/Image-Diffusion/blob/main/media/example1.png?raw=true"/>
+</p>
+<p align="center">
+  <img src="https://github.com/Jamal135/Image-Diffusion/blob/main/media/example2.png?raw=true"/>
+</p>
+<p align="center">
+  <img src="https://github.com/Jamal135/Image-Diffusion/blob/main/media/example3.png?raw=true"/>
+</p>
+<p align="center">
+  <img src="https://github.com/Jamal135/Image-Diffusion/blob/main/media/example4.png?raw=true"/>
+</p>
 
 Creation Date: 06/11/2022
 

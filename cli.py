@@ -71,13 +71,13 @@ def check_loop(_, number: str):
 def get_next_step():
     ''' Returns: User decision on next image generation. '''
     choice = inquirer.list_input(
-                        message = 'What would you like to do next?',
+                        message = 'What would you like to do next',
                         choices = [REGENERATE, ADJUST_STEPS, CHANGE_PROMPT, LOOP, START_OVER, EXIT],
                         default = REGENERATE
                     )
     if choice == 'Loop':
         iterations = int(inquirer.text(
-                        message = 'Howmany times do you want to loop?',
+                        message = 'Howmany times do you want to loop',
                         validate = check_loop
         ))
         for count in range(iterations):

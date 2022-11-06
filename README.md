@@ -38,7 +38,7 @@ Link: https://huggingface.co/settings/tokens
 
 None the less here are the main things you need to do (in theory) to get this repository working for you:
 ```
-0:  Automatic Setup: Try use setup.py then just do steps 5 & 6 (fingers crossed).
+0:  Automatic Setup: Try use setup.py then just do steps 5, 6 & 7 (fingers crossed).
 1:  Virtual Environment: Just use one. The setup.py will use virtualenv, you can use whatever.
 2:  Install Dependencies: All in the requirements.txt, 'pip install -r requirements.txt'.
 3:  CUDA Enabled Torch: Frankly, if setup.py doesn't work goodluck. Get PyTorch CUDA enabled.

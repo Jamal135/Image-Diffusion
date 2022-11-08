@@ -4,7 +4,9 @@
 from pathlib import Path
 import time
 import inquirer
-from image_generation import generate_image
+from colorama import Fore, Style
+
+from functions.image_generation import generate_image
 
 
 STEPS_MIN = 15
@@ -17,6 +19,32 @@ CHANGE_PROMPT = 'Change Prompt'
 LOOP = 'Loop'
 START_OVER = 'Start Over'
 EXIT = 'Exit'
+
+LOG_PATH = 'logs/image_generation_log.csv'
+LOG_HEADING = 'time, choice, steps, seed, path, prompt\n'
+
+class Formats:
+    ''' Purpose: Correctly format print messages given purpose. '''
+    def status(message: str):
+        ''' Format: [-] message...'''
+        indicator = '\n[' + Fore.GREEN + '-' + Style.RESET_ALL + ']'
+        return f'{indicator} {message}...'
+    def question(message: str):
+        ''' Format: [?] message: '''
+        indicator = '\n[' + Fore.YELLOW + '?' + Style.RESET_ALL + ']'
+        return f'{indicator} {message}: '
+    def alert(message: str):
+        ''' Format: [!] message...'''
+        indicator = '\n[' + Fore.RED + '!' + Style.RESET_ALL + ']'
+        return f'{indicator} {message}...'
+
+
+def create_log():
+    ''' Purpose: Creates log file if it does not exist. '''
+    path = Path(LOG_PATH)
+    if not path.is_file():
+        with open(LOG_PATH, 'a') as log:
+            log.write(LOG_HEADING)
 
 
 def check_steps(_, number: str):
@@ -45,18 +73,15 @@ def get_steps():
     return int(steps)
 
 
-def check_prompt(prompt: str):
-    ''' Purpose: Validates prompt input text. '''
-    if prompt == '':
-        print('Please enter a prompt...')
-    return True
-
-
 def get_prompt():
     ''' Returns: String input for image generation. '''
     while True:
-        prompt = input('Describe image: ')
-        if check_prompt:
+        prompt = input(Formats.question('Describe image'))
+        if prompt == '':
+            print(Formats.alert('Please enter a prompt'))
+        elif '"' in prompt:
+            print(Formats.alert('Do not use ""s in prompt'))
+        else:
             break
     return prompt
 
@@ -81,7 +106,7 @@ def get_next_step():
                         validate = check_loop
         ))
         for count in range(iterations):
-            print(f'\nGenerating image {count + 1}/{iterations}...')
+            print(Formats.status(f'Generating image {count + 1}/{iterations}'))
             create_image(None, choice)
         return get_next_step()
     return choice
@@ -90,31 +115,29 @@ def get_next_step():
 def uniquify(filename: str):
 	''' Returns filepath modified if needed to ensure it doesn't already exist. '''
 	counter = 1
-	filepath = Path(f'Images/{filename}.png')
-	while filepath.is_file():
-		filepath = Path(f'Images/{filename + "-" + str(counter)}.png') 
+	path = Path(f'images/{filename}.png')
+	while path.is_file():
+		path = Path(f'images/{filename + "-" + str(counter)}.png') 
 		counter += 1
-	return filepath
+	return path
 
 
 def create_image(seed: int, choice: str):
     ''' Purpose: Updates log file and called image generation. '''
     seed, image = generate_image(prompt, steps, seed=seed)
-    filepath = uniquify(filename)
-    image.save(filepath)
+    path = uniquify(filename)
+    image.save(path)
     print(f'Seed used: {seed}\n')
-    with open('Images/log.txt', 'a') as log:
-        log.write(f'{time.time()}, ')
-        log.write(f'{choice}, ')
-        log.write(f'{steps}, ') 
-        log.write(f'{prompt}, ')
-        log.write(f'{seed}, ')
-        log.write(f'{filepath}\n')
+    when = str(time.time())
+    line = ','.join([when, choice, str(steps), str(seed), str(path), f'"{prompt}"'])
+    with open(LOG_PATH, 'a') as log:
+        log.write(f'{line}\n')
     return seed
 
 
 if __name__ == '__main__':
     filename = 'result'
+    create_log()
     choice = START_OVER
     while True:
         if choice in [START_OVER, ADJUST_STEPS]:
@@ -125,9 +148,10 @@ if __name__ == '__main__':
             seed = seed
         else:
             seed = None
-        print(f'\nGenerating image...')
+        print(Formats.status('Generating image'))
         seed = create_image(seed, choice)
         choice = get_next_step()
         if choice == EXIT:
             exit()
 
+# Migrate to Questionary: https://questionary.readthedocs.io/en/stable/pages/types.html#text

@@ -38,7 +38,7 @@ def create_pipeline():
 
 def generate_image(prompt: str, steps: int = 50, size: int = 512, 
 				   filename: str = None, seed: int = None):
-	''' Purpose: Creates and saves image from provided prompt. '''
+	''' Purpose: Creates and returns generated image from prompt. '''
 	if filename == None:
 		filename = 'result'
 	if seed == None:

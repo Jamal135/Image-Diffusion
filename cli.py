@@ -3,10 +3,11 @@
 
 from pathlib import Path
 import time
+import questionary
 import inquirer
-from colorama import Fore, Style
 
 from functions.image_generation import generate_image
+from functions.library import Formats
 
 
 STEPS_MIN = 15
@@ -22,21 +23,6 @@ EXIT = 'Exit'
 
 LOG_PATH = 'logs/image_generation_log.csv'
 LOG_HEADING = 'time, choice, steps, seed, path, prompt\n'
-
-class Formats:
-    ''' Purpose: Correctly format print messages given purpose. '''
-    def status(message: str):
-        ''' Format: [-] message...'''
-        indicator = '\n[' + Fore.GREEN + '-' + Style.RESET_ALL + ']'
-        return f'{indicator} {message}...'
-    def question(message: str):
-        ''' Format: [?] message: '''
-        indicator = '\n[' + Fore.YELLOW + '?' + Style.RESET_ALL + ']'
-        return f'{indicator} {message}: '
-    def alert(message: str):
-        ''' Format: [!] message...'''
-        indicator = '\n[' + Fore.RED + '!' + Style.RESET_ALL + ']'
-        return f'{indicator} {message}...'
 
 
 def create_log():

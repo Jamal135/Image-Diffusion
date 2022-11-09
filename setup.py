@@ -30,9 +30,9 @@ def create_env():
 
 
 if __name__ == '__main__':
+    import_or_install('colorama')
+    from functions.library import Formats
     try:
-        import_or_install('colorama')
-        from functions.library import Formats
         if is_venv():
             print(Formats.status('Setting up prerequisites'))
             if not os.path.exists('.env'):
@@ -40,10 +40,10 @@ if __name__ == '__main__':
             else:
                 print(Formats.info('.env already exists'))
             print(Formats.status('Installing requirements'))
-            pip.main(['install', '-r', 'requirements.txt'])
+            os.system('pip install -r requirements.txt')
             print(Formats.status('Finishing setup'))
             print(Formats.info('Enable developer mode and get latest GPU drivers'))
         else:
             print(Formats.alert('No virtual environment, aborting'))
-    except Exception as e:
+    except Exception as e:  
         print(Formats.alert(f"Automatic setup failed:\n{e}"))

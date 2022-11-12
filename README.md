@@ -41,11 +41,11 @@ Link: https://huggingface.co/settings/tokens
 
 None the less here are the main things you need to do (in theory) to get this repository working for you:
 ```
-0:  Automatic Setup: Try use setup.py then just do steps 5, 6 & 7 (fingers crossed).
-1:  Virtual Environment: Just use one. The setup.py will use virtualenv, you can use whatever.
+0:  Virtual Environment: Create a virtual environment (virtualenv .venv).
+1:  Automatic Setup: Try use setup.py then just do steps 5, 6 & 7 (fingers crossed).
 2:  Install Dependencies: All in the requirements.txt, 'pip install -r requirements.txt'.
 3:  CUDA Enabled Torch: Frankly, if setup.py doesn't work goodluck. Get PyTorch CUDA enabled.
-4:  Environment Variable: Must create a .env 'TOKEN=' a Hugging Face read token. Setup does this.
+4:  Environment Variable: Must create a .env 'TOKEN=' a Hugging Face read token. Setup prompts.
 5:  Developer Mode: If using Windows, activate developer mode. Or always run cli.py as admin.
 6:  GPU Drivers: Even if your GPU is compatible, make sure you have the latest drivers.
 --- Most Importantly ---

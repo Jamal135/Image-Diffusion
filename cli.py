@@ -47,15 +47,10 @@ def check_steps(_, number: str):
 
 def get_steps():
     ''' Returns: Integer input for number inference steps. '''
-    steps = inquirer.list_input(
-                        message = f'Number of steps',
-                        choices = [25, 50, 75, 100, 250, 750, 'Custom'],
-                        default = 50)
+    steps = inquirer.list_input(message='Number of steps', choices=[25, 50, 75, 100, 250, 750, 'Custom'], default=50)
+
     if steps == 'Custom':
-        steps = inquirer.text(
-                        message = f'Enter number steps',
-                        validate = check_steps
-        )
+        steps = inquirer.text(message='Enter number steps', validate = check_steps)
     return int(steps)
 
 
@@ -99,13 +94,13 @@ def get_next_step():
 
 
 def uniquify(filename: str):
-	''' Returns filepath modified if needed to ensure it doesn't already exist. '''
-	counter = 1
-	path = Path(f'images/{filename}.png')
-	while path.is_file():
-		path = Path(f'images/{filename + "-" + str(counter)}.png') 
-		counter += 1
-	return path
+    ''' Returns filepath modified if needed to ensure it doesn't already exist. '''
+    counter = 1
+    path = Path(f'images/{filename}.png')
+    while path.is_file():
+        path = Path(f'images/{filename}-{str(counter)}.png')
+        counter += 1
+    return path
 
 
 def create_image(seed: int, choice: str):
@@ -130,10 +125,7 @@ if __name__ == '__main__':
             steps = get_steps()
         if choice in [START_OVER, CHANGE_PROMPT]:
             prompt = get_prompt()
-        if choice in [ADJUST_STEPS, CHANGE_PROMPT]:
-            seed = seed
-        else:
-            seed = None
+        seed = seed if choice in [ADJUST_STEPS, CHANGE_PROMPT] else None
         print(Formats.status('Generating image'))
         seed = create_image(seed, choice)
         choice = get_next_step()

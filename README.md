@@ -52,7 +52,7 @@ None the less here are the main things you need to do (in theory) to get this re
 7:  Pray: Python is always a dependency mess but this stuff is particularly bad, best of luck.
 ```
 
-If you have advice on how this setup process can be improved please do share!
+If you have advice on how this setup process can be improved please do share! You may also need to change what CUDA enabled Torch version you are installing based on the hardware of your computer.
 ***
 # Acknowledgements:
 ---
